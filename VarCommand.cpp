@@ -11,6 +11,7 @@ int VarCommand::execute(int index) {
         this->vars->insert({commands->at(index+1), new Var(commands->at(index+1), 0, commands->at(index+4))});
         return 5;
     } else {
+        this->vars->insert({commands->at(index+1), new Var(commands->at(index+1), 0, commands->at(index+4))});
         return 4;
     }
 }
