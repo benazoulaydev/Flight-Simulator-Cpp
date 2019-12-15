@@ -3,3 +3,7 @@
 //
 
 #include "SleepCommand.h"
+
+int SleepCommand::execute(int index) {
+    return 2;
+}

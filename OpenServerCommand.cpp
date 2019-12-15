@@ -3,3 +3,7 @@
 //
 
 #include "OpenServerCommand.h"
+
+int OpenServerCommand::execute(int index) {
+    return 2;
+}
