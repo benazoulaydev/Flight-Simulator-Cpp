@@ -6,8 +6,11 @@
 #define UNTITLED3_CONNECTCLIENTCOMMAND_H
 
 
-class ConnectClientCommand {
+#include "Command.h"
 
+class ConnectClientCommand  : public Command{
+public:
+    int execute(int index) override;
 };
 
 

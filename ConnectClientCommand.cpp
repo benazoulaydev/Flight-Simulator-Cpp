@@ -3,3 +3,7 @@
 //
 
 #include "ConnectClientCommand.h"
+
+int ConnectClientCommand::execute(int index) {
+    return 3;
+}

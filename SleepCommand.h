@@ -6,7 +6,11 @@
 #define UNTITLED3_SLEEPCOMMAND_H
 
 
-class SleepCommand {
+#include "Command.h"
+
+class SleepCommand : public Command{
+public:
+    int execute(int index) override;
 
 };
 

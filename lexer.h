@@ -10,8 +10,8 @@
 #include <iostream>
 using namespace std;
 
-void lexer(vector<string> commands, string line);
-void lexerFromFile(vector<string> commands, string fileName);
+void lexer(vector<string> *commands, string line);
+void lexerFromFile(vector<std::__cxx11::string> *commands, string fileName);
 
 class lexer {
 

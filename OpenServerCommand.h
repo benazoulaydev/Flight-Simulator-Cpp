@@ -6,7 +6,11 @@
 #define UNTITLED3_OPENSERVERCOMMAND_H
 
 
-class OpenServerCommand {
+#include "Command.h"
+
+class OpenServerCommand  : public Command{
+public:
+    int execute(int index) override;
 
 };
 

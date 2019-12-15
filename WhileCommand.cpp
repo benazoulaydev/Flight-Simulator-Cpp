@@ -3,3 +3,13 @@
 //
 
 #include "WhileCommand.h"
+
+int WhileCommand::execute(int index) {
+    //need to rewrite with stack!!
+    int jump = 1;
+    while(this->commands->at(index)[0] != '}'){
+        index++;
+        jump++;
+    }
+    return jump;
+}
