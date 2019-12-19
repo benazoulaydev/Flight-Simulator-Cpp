@@ -52,7 +52,8 @@ int main(int argc, char* argv[]) {
             Command* c = commandsMap.at(commands.at(i));
             i += c->execute(i);
         } else {
-            varMap[commands.at(i)]->value = commandsMap["var"]->interpretFromString(commands.at(i+2));//stod(commands.at(i+2));
+            varMap[commands.at(i)]->value = ((VarCommand*)commandsMap["var"])->
+                    interpretFromString(commands.at(i+2));
             i += 3;
         }
     }

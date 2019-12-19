@@ -91,9 +91,10 @@ bool validation(string expStr, string expVars) {
 
 Expression *Interpreter::interpret(const string &exp) {
     string expr = replaceVariables(exp);
-    if(!validation(expr, exp)){
-        throw "Invalid Syntax";
-    }
+    // TODO check validation requirements!!
+//    if(!validation(expr, exp)){
+//        throw "Invalid Syntax";
+//    }
     expr = replaceMinus(expr);
     stack<char> s;
     queue<string> q;
@@ -182,7 +183,7 @@ Expression *Interpreter::interpret(const string &exp) {
 
 void Interpreter::setVariables(const string &exp) {
     // validation
-    regex r = regex("[a-zA-Z][a-zA-Z_0-9]*[=][-]?[1-9][0-9]*[.]?[0-9]*");
+    regex r = regex("[a-zA-Z][a-zA-Z_0-9]*[=][-]?[0-9][0-9]*[.]?[0-9]*");
     map<string, string> elements;
     string delimiter = ";", token, expr = exp+";";
     long int i = 0;
