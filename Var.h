@@ -20,6 +20,7 @@ public:
         this->value = value;
         this->sim = sim;
     }
+    string toStr();
 };
 
 
