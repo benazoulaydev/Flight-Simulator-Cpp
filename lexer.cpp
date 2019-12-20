@@ -86,7 +86,6 @@ void lexer(vector<string> *commands, string line){
             line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
             in = line.substr(5);
         }
-        (*commands).emplace_back("{");
         string dl = "";
         int i = 0;
         while(i < in.size()){
@@ -99,6 +98,7 @@ void lexer(vector<string> *commands, string line){
         (*commands).emplace_back(dl);
         string in2 = in.substr(in.find(dl) + dl.length());
         (*commands).emplace_back(in2.substr(0,in2.find('{')));
+        (*commands).emplace_back("{");
     } else { // just changing var or }
         line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
         if (line[0] == '}'){

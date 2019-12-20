@@ -8,6 +8,8 @@
 
 #include "Command.h"
 #include "Var.h"
+#include "expression/Interpreter.h"
+#include "Executor.h"
 #include <string>
 #include <vector>
 #include <unordered_map>
@@ -15,12 +17,10 @@ using namespace std;
 
 class WhileCommand : public Command{
 private:
-    vector<string> *commands;
-    unordered_map<string, Var*> *vars;
+    Executor* executor;
 public:
-    explicit WhileCommand(vector<string> *commands, unordered_map<string, Var*> *vars){
-        this->commands = commands;
-        this->vars = vars;
+    WhileCommand(Executor* executor) {
+        this->executor = executor;
     }
     int execute(int index) override;
 };
