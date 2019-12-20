@@ -10,28 +10,18 @@
 #include "Command.h"
 #include "Var.h"
 #include "expression/Interpreter.h"
+//#include "Executor.h"
 #include <vector>
 #include <unordered_map>
-
 using namespace std;
-
+class Executor;
 class VarCommand : public Command{
 private:
-    vector<string> *commands;
-    unordered_map<string, Var*> *vars;
-    Interpreter* interpreter;
+    Executor* executor;
 public:
-    explicit VarCommand(vector<string> *commands, unordered_map<string, Var*> *vars){
-        this->commands = commands;
-        this->vars = vars;
-        this->interpreter = new Interpreter();
-    }
+    VarCommand(Executor* executor);
     int execute(int index) override;
-    double interpretFromString(string expression);
-
-    ~VarCommand() override{
-        delete this->interpreter;
-    }
+//    double interpretFromString(string expression);
 };
 
 

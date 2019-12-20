@@ -2,39 +2,58 @@
 // Created by kfir on 12/19/19.
 //
 
-#include "executor.h"
+#include "Executor.h"
+#include "PrintCommand.h"
+#include "SleepCommand.h"
+#include "IfCommand.h"
+#include "WhileCommand.h"
+#include "VarCommand.h"
+#include "ConnectClientCommand.h"
+#include "OpenServerCommand.h"
+#include "expression/Interpreter.cpp"
 
-void executor::initiate() {
+void Executor::initiate() {
     // initializing commands objects.
-    PrintCommand p = PrintCommand(commands, &varMap);
-    commandsMap["Print"] = (Command*)&p;
-    VarCommand v = VarCommand(commands, &varMap, &inp);
-    commandsMap["var"] = (Command*)&v;
-    OpenServerCommand os = OpenServerCommand();
-    commandsMap["openDataServer"] = (Command*)&os;
-    ConnectClientCommand cc = ConnectClientCommand();
-    commandsMap["connectControlClient"] = (Command*)&cc;
-    SleepCommand s = SleepCommand();
-    commandsMap["Sleep"] = (Command*)&s;
-    IfCommand ic = IfCommand(commands, &varMap);
-    commandsMap["if"] = (Command*)&ic;
-    WhileCommand w = WhileCommand(commands, &varMap, &inp);
-    commandsMap["while"] = (Command*)&w;
+    PrintCommand* p = new PrintCommand(commands, &varMap);
+    commandsMap["Print"] = (Command*)&*p;
+    VarCommand* v = new VarCommand(this);
+    commandsMap["var"] = (Command*)&*v;
+    OpenServerCommand* os = new OpenServerCommand();
+    commandsMap["openDataServer"] = (Command*)os;
+    ConnectClientCommand* cc = new ConnectClientCommand();
+    commandsMap["connectControlClient"] = (Command*)cc;
+    SleepCommand* s = new SleepCommand();
+    commandsMap["Sleep"] = (Command*)s;
+    IfCommand* ic = new IfCommand(this);
+    commandsMap["if"] = (Command*)ic;
+    WhileCommand* w = new WhileCommand(this);
+    commandsMap["while"] = (Command*)w;
+
 }
 
-void executor::executeScope() {
+void Executor::executeScope(int start, int end) {
     // execute the commands.
-    int i = 0;
-    while (i < commands->size()){
+    int i = start;
+    while (i < end){
+        if( commands->at(i+1)=="x")
+            cout<<"hi"<<i<<endl;
         if (commandsMap.find(commands->at(i)) != commandsMap.end()){
             Command* c = commandsMap.at(commands->at(i));
             i += c->execute(i);
         } else {
-            varMap[commands->at(i)]->value = ((VarCommand*)commandsMap["var"])->
-                    interpretFromString(commands->at(i+2));
+            varMap[commands->at(i)]->value = interpretFromString(commands->at(i+2));
             i += 3;
         }
     }
+}
 
+double Executor::interpretFromString(string expression) {
+    refreshVariables();
+    return this->interpreter.interpret(expression)->calculate();
+}
 
+void Executor::refreshVariables() {
+    for(auto varPair : this->varMap){
+        this->interpreter.setVariables(varPair.second->toStr());
+    }
 }

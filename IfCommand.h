@@ -8,6 +8,7 @@
 
 #include "Command.h"
 #include "Var.h"
+#include "Executor.h"
 #include <string>
 #include <vector>
 #include <unordered_map>
@@ -15,12 +16,10 @@ using namespace std;
 
 class IfCommand  : public Command{
 private:
-    vector<string> *commands;
-    unordered_map<string, Var*> *vars;
+    Executor* executor;
 public:
-    explicit IfCommand(vector<string> *commands, unordered_map<string, Var*> *vars){
-        this->commands = commands;
-        this->vars = vars;
+    explicit IfCommand(Executor* executor) {
+        this->executor = executor;
     }
 
     int execute(int index) override;

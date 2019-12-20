@@ -9,33 +9,29 @@
 #include <vector>
 #include <iostream>
 #include <unordered_map>
-#include "lexer.h"
 #include "Command.h"
-#include "PrintCommand.h"
 #include "Var.h"
-#include "VarCommand.h"
-#include "SleepCommand.h"
-#include "IfCommand.h"
-#include "WhileCommand.h"
-#include "ConnectClientCommand.h"
-#include "OpenServerCommand.h"
 #include "expression/Interpreter.h"
 
 using namespace std;
 
-class executor {
-protected:
+class Executor : public Command {
+public:
     vector<string> *commands;
     unordered_map<string, Command*> commandsMap;
     unordered_map<string, Var*> varMap;
-    Interpreter inp;
-public:
-    executor(vector<string> *commands){
+    Interpreter interpreter;
+    Executor(vector<string> *commands){
         this->commands = commands;
-        initiate();
     }
+    int execute(int index) override{return 0;}
     void initiate();
-    void executeScope();
+    void executeScope(int start, int end);
+    void refreshVariables();
+    double interpretFromString(string expression);
+    ~Executor(){
+        //TODO delete commandsMap
+    }
 };
 
 
