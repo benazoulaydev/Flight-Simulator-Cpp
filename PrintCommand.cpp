@@ -4,15 +4,14 @@
 
 #include <iostream>
 #include "PrintCommand.h"
+#include "Executor.h"
 
 int PrintCommand::execute(int index) {
-    string currentCmd = this->commands->at(index+1);
+    string currentCmd = executor->commands->at(index+1);
     if (currentCmd[0] == '"'){
         cout<<currentCmd<<endl;
     } else {
-        if (this->vars->find(currentCmd) != this->vars->end()) {
-            cout << this->vars->at(currentCmd)->value << endl;
-        }
+        cout << executor->interpretFromString(currentCmd) << endl;
     }
     return 2;
 }
