@@ -25,13 +25,6 @@ int VarCommand::execute(int index) {
     }
 }
 
-//double VarCommand::interpretFromString(string expression) {
-//    for(auto varPair : executor->varMap){
-//        this->interpreter->setVariables(varPair.second->toStr());
-//    }
-//    return this->interpreter->interpret(expression)->calculate();
-//}
-
 VarCommand::VarCommand(Executor *executor) {
     this->executor = executor;
 }

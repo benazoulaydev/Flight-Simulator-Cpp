@@ -10,7 +10,6 @@
 #include "Command.h"
 #include "Var.h"
 #include "expression/Interpreter.h"
-//#include "Executor.h"
 #include <vector>
 #include <unordered_map>
 using namespace std;
@@ -21,7 +20,6 @@ private:
 public:
     VarCommand(Executor* executor);
     int execute(int index) override;
-//    double interpretFromString(string expression);
 };
 
 

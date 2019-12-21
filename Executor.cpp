@@ -14,10 +14,10 @@
 
 void Executor::initiate() {
     // initializing commands objects.
-    PrintCommand* p = new PrintCommand(commands, &varMap);
-    commandsMap["Print"] = (Command*)&*p;
+    PrintCommand* p = new PrintCommand(this);
+    commandsMap["Print"] = (Command*)p;
     VarCommand* v = new VarCommand(this);
-    commandsMap["var"] = (Command*)&*v;
+    commandsMap["var"] = (Command*)v;
     OpenServerCommand* os = new OpenServerCommand();
     commandsMap["openDataServer"] = (Command*)os;
     ConnectClientCommand* cc = new ConnectClientCommand();
