@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 project(untitled3)
 
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_FLAGS -pthread)
 file(GLOB expression_SRC
     "*.h"
     "*.cpp"
