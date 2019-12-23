@@ -7,9 +7,15 @@
 
 
 #include "Command.h"
+class Executor;
 
 class OpenServerCommand  : public Command{
+private:
+    Executor* executor;public:
 public:
+    explicit OpenServerCommand(Executor* executor) {
+        this->executor = executor;
+    }
     int execute(int index) override;
 
 };

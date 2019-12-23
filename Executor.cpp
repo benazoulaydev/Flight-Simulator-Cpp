@@ -18,7 +18,7 @@ void Executor::initiate() {
     commandsMap["Print"] = (Command*)p;
     VarCommand* v = new VarCommand(this);
     commandsMap["var"] = (Command*)v;
-    OpenServerCommand* os = new OpenServerCommand();
+    OpenServerCommand* os = new OpenServerCommand(this);
     commandsMap["openDataServer"] = (Command*)os;
     ConnectClientCommand* cc = new ConnectClientCommand();
     commandsMap["connectControlClient"] = (Command*)cc;
@@ -35,8 +35,6 @@ void Executor::executeScope(int start, int end) {
     // execute the commands.
     int i = start;
     while (i < end){
-        if( commands->at(i+1)=="x")
-            cout<<"hi"<<i<<endl;
         if (commandsMap.find(commands->at(i)) != commandsMap.end()){
             Command* c = commandsMap.at(commands->at(i));
             i += c->execute(i);
