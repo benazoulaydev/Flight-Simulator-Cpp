@@ -18,7 +18,7 @@ void Executor::initiate() {
     commandsMap["Print"] = (Command*)p;
     VarCommand* v = new VarCommand(this);
     commandsMap["var"] = (Command*)v;
-    OpenServerCommand* os = new OpenServerCommand();
+    OpenServerCommand* os = new OpenServerCommand(this);
     commandsMap["openDataServer"] = (Command*)os;
     ConnectClientCommand* cc = new ConnectClientCommand();
     commandsMap["connectControlClient"] = (Command*)cc;
