@@ -11,6 +11,7 @@
 #include "ConnectClientCommand.h"
 #include "OpenServerCommand.h"
 #include "expression/Interpreter.cpp"
+#include "FunctionCommand.h"
 
 void Executor::initiate() {
     // initializing commands objects.
@@ -35,9 +36,11 @@ void Executor::executeScope(int start, int end) {
     // execute the commands.
     int i = start;
     while (i < end){
-        if( commands->at(i+1)=="x")
-            cout<<"hi"<<i<<endl;
-        if (commandsMap.find(commands->at(i)) != commandsMap.end()){
+        if (commands->at(i+1) == "var"){
+            //create functionCommand and jump as needed
+            commandsMap.insert({commands->at(i), new FunctionCommand(this, i)});
+            i += jumpScope(i);
+        }else if (commandsMap.find(commands->at(i)) != commandsMap.end()){
             Command* c = commandsMap.at(commands->at(i));
             i += c->execute(i);
         } else {
@@ -56,4 +59,21 @@ void Executor::refreshVariables() {
     for(auto varPair : this->varMap){
         this->interpreter.setVariables(varPair.second->toStr());
     }
+}
+
+int Executor::jumpScope(int index) {
+    stack<char> s;
+    s.emplace('{');
+    int jump = 4;
+    int i = index + 4;
+    while(!s.empty()){
+        if (commands->at(i)[0] == '}'){
+            s.pop();
+        } else if (commands->at(i)[0] == '{'){
+            s.emplace('{');
+        }
+        i++;
+        jump++;
+    }
+    return jump;
 }

@@ -29,6 +29,7 @@ public:
     void executeScope(int start, int end);
     void refreshVariables();
     double interpretFromString(string expression);
+    int jumpScope(int index);
     ~Executor(){
         //TODO delete commandsMap
     }
