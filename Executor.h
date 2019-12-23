@@ -21,6 +21,7 @@ public:
     unordered_map<string, Command*> commandsMap;
     unordered_map<string, Var*> varMap;
     Interpreter interpreter;
+    unordered_map<int, string> simMap;
     Executor(vector<string> *commands){
         this->commands = commands;
     }
@@ -32,6 +33,8 @@ public:
     ~Executor(){
         //TODO delete commandsMap
     }
+
+    void createSimMap();
 };
 
 
