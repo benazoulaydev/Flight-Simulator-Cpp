@@ -8,6 +8,8 @@
 
 int PrintCommand::execute(int index) {
     string currentCmd = executor->commands->at(index+1);
+    cout<<" "<<endl;
+
     if (currentCmd[0] == '"'){
         cout<<currentCmd<<endl;
     } else {
