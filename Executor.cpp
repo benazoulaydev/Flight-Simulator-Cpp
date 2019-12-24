@@ -11,6 +11,7 @@
 #include "ConnectClientCommand.h"
 #include "OpenServerCommand.h"
 #include "expression/Interpreter.cpp"
+#include "ConnectClientCommand.h"
 
 void Executor::initiate() {
     // initializing commands objects.
@@ -20,9 +21,9 @@ void Executor::initiate() {
     commandsMap["var"] = (Command*)v;
     OpenServerCommand* os = new OpenServerCommand(this);
     commandsMap["openDataServer"] = (Command*)os;
-    ConnectClientCommand* cc = new ConnectClientCommand();
+    ConnectClientCommand* cc = new ConnectClientCommand(this);
     commandsMap["connectControlClient"] = (Command*)cc;
-    SleepCommand* s = new SleepCommand();
+    SleepCommand* s = new SleepCommand(this);
     commandsMap["Sleep"] = (Command*)s;
     IfCommand* ic = new IfCommand(this);
     commandsMap["if"] = (Command*)ic;
@@ -39,7 +40,10 @@ void Executor::executeScope(int start, int end) {
             Command* c = commandsMap.at(commands->at(i));
             i += c->execute(i);
         } else {
+
             varMap[commands->at(i)]->value = interpretFromString(commands->at(i+2));
+            //TODO sendToServer(varMap[commands->at(i)]
+            ((ConnectClientCommand*) commandsMap["connectControlClient"])->sendToServer(varMap[commands->at(i)]);
             i += 3;
         }
     }

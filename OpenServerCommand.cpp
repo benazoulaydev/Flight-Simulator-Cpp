@@ -48,10 +48,10 @@ int OpenServerCommand::execute(int index) {
 int OpenServerCommand::serverExecution(int index) {
     //reading from client
     unsigned long int i = 1;
-    while(i<100){
+    while(1){
         char buffer[1024] = {0};
         int valread = read( index , buffer, 1024);
-        cout<<buffer<<endl;
+        //cout<<buffer<<endl;
         i++;
     }
 

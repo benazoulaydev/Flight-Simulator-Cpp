@@ -7,10 +7,21 @@
 
 
 #include "Command.h"
+#include "Var.h"
+
+class Executor;
 
 class ConnectClientCommand  : public Command{
+private:
+    Executor* executor;
+    int client_socket;
 public:
+    explicit ConnectClientCommand(Executor* executor) {
+        this->executor = executor;
+    }
     int execute(int index) override;
+    void sendToServer(Var* aVar);
+
 };
 
 
