@@ -105,9 +105,13 @@ Expression *Interpreter::interpret(const string &exp) {
         if(isUnaryOp(expr, i)){
             i++;
             if(token == '-'){
-                string numberStr = extractNumber(expr, i);
-                i+=numberStr.size();
-                q.push("-"+numberStr);
+                if(expr[1]=='-'){
+                    i+=2;
+                } else {
+                    string numberStr = extractNumber(expr, i);
+                    i+=numberStr.size();
+                    q.push("-"+numberStr);
+                }
             }
         } else if(isdigit(token)){
             string numberStr = extractNumber(expr, i);

@@ -14,7 +14,9 @@ int VarCommand::execute(int index) {
         // TODO change between -> to <-
         if (executor->commands->at(index+2) == "->"){
             executor->varMap.insert({executor->commands->at(index+1), new Var(executor->commands->at(index+1), 0, executor->commands->at(index+4))});
-        } else {
+            Var* cur = executor->varMap[executor->commands->at(index+1)];
+            cur->arrow = "->";
+        } else { // case <-
             executor->varMap.insert({executor->commands->at(index+1), new Var(executor->commands->at(index+1), 0, executor->commands->at(index+4))});
             Var* cur = executor->varMap[executor->commands->at(index+1)];
             cur->arrow = "<-";

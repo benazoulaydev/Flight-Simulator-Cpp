@@ -45,7 +45,7 @@ int OpenServerCommand::execute(int index) {
 int OpenServerCommand::serverExecution(int clientSocket) {
     //reading from client
     unsigned long int i = 1;
-    while(i<1000000){
+    while(1){
         char buffer[2048] = {0};
         int valread = read( clientSocket , buffer, 2048);
 //        cout<<buffer<<endl;

@@ -15,7 +15,7 @@ public:
     string name;
     double value;
     string sim;
-    string arrow = "->";
+    string arrow = "no";
     Var(string name, double value, string sim){
         this->name = name;
         this->value = value;
