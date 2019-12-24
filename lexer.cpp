@@ -19,7 +19,7 @@ void lexer(vector<string> *commands, string line){
     if (regex_match(line, print)){
         (*commands).emplace_back("Print");
         unsigned startPos = line.find ('(');
-        unsigned endPos = line.find(')');
+        unsigned endPos = line.find_last_of(')');
         string in = line.substr(startPos + 1, endPos - startPos - 1);
         if (in.find('"') == string::npos){
             in.erase(std::remove_if(in.begin(), in.end(), ::isspace), in.end());

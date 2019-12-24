@@ -2,6 +2,12 @@
 #include "lexer.h"
 #include "Executor.h"
 
+#include <sys/socket.h>
+#include <string>
+#include <iostream>
+#include <unistd.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
 using namespace std;
 
@@ -21,4 +27,6 @@ int main(int argc, char* argv[]) {
     executor.initiate();
     executor.executeScope(0, commands.size());
     return 0;
+
+
 }
