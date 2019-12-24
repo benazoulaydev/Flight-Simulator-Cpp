@@ -16,6 +16,9 @@ int VarCommand::execute(int index) {
             executor->varMap.insert({executor->commands->at(index+1), new Var(executor->commands->at(index+1), 0, executor->commands->at(index+4))});
         } else {
             executor->varMap.insert({executor->commands->at(index+1), new Var(executor->commands->at(index+1), 0, executor->commands->at(index+4))});
+            Var* cur = executor->varMap[executor->commands->at(index+1)];
+            cur->arrow = "<-";
+            executor->simToVarMap[cur->sim] = cur;
         }
         return 5;
     } else { // this is var expression.
