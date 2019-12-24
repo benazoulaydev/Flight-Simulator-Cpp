@@ -39,19 +39,36 @@ int OpenServerCommand::execute(int index) {
     bool accepted = false;
     thread thread1(&OpenServerCommand::serverExecution,this, client_socket);
     thread1.detach();
-//    while (!(accepted)) {
-//    }
-
-
+    //TODO find ditch and telete before main finish
     return 2;
 }
-int OpenServerCommand::serverExecution(int index) {
+int OpenServerCommand::serverExecution(int clientSocket) {
     //reading from client
     unsigned long int i = 1;
-    while(1){
-        char buffer[1024] = {0};
-        int valread = read( index , buffer, 1024);
-        //cout<<buffer<<endl;
+    while(i<1000000){
+        char buffer[2048] = {0};
+        int valread = read( clientSocket , buffer, 2048);
+        cout<<buffer<<endl;
+        string numbArray[36];
+        string numHelp = "";
+        int index = 0;
+        for (int k = 0; buffer[k] != '\0'; k++) {
+            if (buffer[k] == ',' || buffer[k] == '\n') {
+                numbArray[index] = numHelp;
+                numHelp = "";
+                index++;
+                continue;
+            }
+            numHelp += buffer[k];
+        }
+        numbArray[index] = numHelp;
+        // update the variables
+        for (int j = 1; j <= 36; ++j) {
+            cout << index << " "<<numbArray[index] << endl;
+            if(executor->simToVarMap.find(executor->simMap[j]) != executor->varMap.end()){
+                executor->simToVarMap[executor->simMap[j]]->value = stod(numbArray[j-1]);
+            }
+        }
         i++;
     }
 
