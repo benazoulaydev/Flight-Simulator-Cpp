@@ -48,12 +48,12 @@ int OpenServerCommand::serverExecution(int clientSocket) {
     while(i<1000000){
         char buffer[2048] = {0};
         int valread = read( clientSocket , buffer, 2048);
-        cout<<buffer<<endl;
+//        cout<<buffer<<endl;
         string numbArray[36];
         string numHelp = "";
         int index = 0;
-        for (int k = 0; buffer[k] != '\0'; k++) {
-            if (buffer[k] == ',' || buffer[k] == '\n') {
+        for (int k = 0; buffer[k] != '\n'; k++) {
+            if (buffer[k] == ',') {
                 numbArray[index] = numHelp;
                 numHelp = "";
                 index++;
@@ -64,12 +64,14 @@ int OpenServerCommand::serverExecution(int clientSocket) {
         numbArray[index] = numHelp;
         // update the variables
         for (int j = 1; j <= 36; ++j) {
-            cout << index << " "<<numbArray[index] << endl;
+//            cout << index << " "<<numbArray[index] << endl;
             if(executor->simToVarMap.find(executor->simMap[j]) != executor->varMap.end()){
                 executor->simToVarMap[executor->simMap[j]]->value = stod(numbArray[j-1]);
             }
         }
         i++;
+        //sleep
+        this_thread::sleep_for(chrono::milliseconds(100));
     }
 
 }
