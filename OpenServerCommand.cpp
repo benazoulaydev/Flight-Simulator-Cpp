@@ -61,6 +61,7 @@ int OpenServerCommand::serverExecution(int clientSocket) {
             }
             numHelp += buffer[k];
         }
+        numbArray[index] = numHelp;
         // update the variables
         for (int j = 1; j <= 36; ++j) {
 //            cout << index << " "<<numbArray[index] << endl;
@@ -69,8 +70,7 @@ int OpenServerCommand::serverExecution(int clientSocket) {
             }
         }
         i++;
-        //sleep
-        this_thread::sleep_for(chrono::milliseconds(100));
+
     }
 
 }

@@ -6,6 +6,7 @@
 #define UNTITLED3_CONNECTCLIENTCOMMAND_H
 
 
+#include <unistd.h>
 #include "Command.h"
 #include "Var.h"
 
@@ -21,7 +22,9 @@ public:
     }
     int execute(int index) override;
     void sendToServer(Var* aVar);
-
+    ~ConnectClientCommand(){
+        close(client_socket);
+    };
 };
 
 
