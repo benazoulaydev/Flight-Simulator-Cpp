@@ -12,6 +12,7 @@
 #include "Command.h"
 #include "Var.h"
 #include "expression/Interpreter.h"
+#include <iterator>
 
 using namespace std;
 
@@ -32,6 +33,12 @@ public:
     void refreshVariables();
     double interpretFromString(string expression);
     ~Executor(){
+        for(auto varPair : this->varMap){
+            delete(varPair.second);
+        }
+        for(auto varPair : this->commandsMap){
+            delete(varPair.second);
+        }
         //TODO delete commandsMap
     }
 

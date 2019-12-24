@@ -24,7 +24,17 @@ int ConnectClientCommand::execute(int index) {
     //We need to create a sockaddr obj to hold address of server
     sockaddr_in address; //in means IP4
     address.sin_family = AF_INET;//IP4
-    address.sin_addr.s_addr = inet_addr("127.0.0.1");  //the localhost address
+
+    //string to char *
+    string addressRecvStr = executor->commands->at(index+1);
+    int n = addressRecvStr.length();
+    // declaring character array
+    char addressRecvStrChar[n + 1];
+    // copying the contents of the
+    // string to char array
+    strcpy(addressRecvStrChar, addressRecvStr.c_str());
+
+    address.sin_addr.s_addr = inet_addr(addressRecvStrChar);  //the localhost address
     address.sin_port = htons(stoi(executor->commands->at(index+2)));
     //we need to convert our number (both port & localhost)
     // to a number that the network understands.
