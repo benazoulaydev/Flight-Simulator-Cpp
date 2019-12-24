@@ -73,9 +73,11 @@ void lexer(vector<string> *commands, string line){
         unsigned startPos = line.find ('(');
         unsigned endPos = line.find_last_of(')');
         string in = line.substr(startPos+1,endPos-startPos-1);
-        (*commands).emplace_back(in.substr(0, in.find(',')));
-        //TODO fix address lexer
-        (*commands).emplace_back(in.substr(in.find(',')+1));
+        string right = in.substr(1, in.find(','));
+        right = in.substr(1, right.size() - 2);
+        string left = in.substr(in.find(',')+1);
+        (*commands).emplace_back(right);
+        (*commands).emplace_back(left);
     } else if (regex_match(line, whileLoop) || regex_match(line, ifCon)){
         string in;
         if (regex_match(line, ifCon)){
@@ -116,6 +118,7 @@ void lexerFromFile(vector<string> *commands, string fileName) {
     ifstream file(fileName);
     if (file.is_open()) {
         string line;
+
         while (getline(file, line)) {
             lexer(commands, line);
         }
