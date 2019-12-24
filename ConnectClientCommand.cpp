@@ -46,8 +46,7 @@ int ConnectClientCommand::execute(int index) {
 
 void ConnectClientCommand::sendToServer(Var* aVar) {
 //if here we made a connection
-    //string toSend = "set " + aVar->sim + " " + to_string(aVar->value);
-    string toSend = "set /controls/flight/rudder -1";
+    string toSend = "set " + aVar->sim + " " + to_string(aVar->value) + "\r\n";
 
     int n = toSend.length();
 
