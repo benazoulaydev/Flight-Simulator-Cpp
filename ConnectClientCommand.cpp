@@ -6,7 +6,6 @@
 #include <sys/socket.h>
 #include <cstring>
 #include <iostream>
-#include <unistd.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include "Executor.h"
@@ -46,8 +45,7 @@ int ConnectClientCommand::execute(int index) {
 
 void ConnectClientCommand::sendToServer(Var* aVar) {
 //if here we made a connection
-    //string toSend = "set " + aVar->sim + " " + to_string(aVar->value);
-    string toSend = "set /controls/flight/rudder -1";
+    string toSend = "set " + aVar->sim + " " + to_string(aVar->value) + "\r\n";
 
     int n = toSend.length();
 
@@ -57,15 +55,12 @@ void ConnectClientCommand::sendToServer(Var* aVar) {
     // copying the contents of the
     // string to char array
     strcpy(char_array, toSend.c_str());
-    std::cout<<char_array <<std::endl;
 
     int is_sent = send(client_socket , char_array , toSend.size() , 0 );
     if (is_sent == -1) {
         std::cout<<"Error sending message"<<std::endl;
-    } else {
-        std::cout<<"Hello message sent to server" <<std::endl;
     }
 
-//    close(client_socket);
+    //close(client_socket);
 
 }
