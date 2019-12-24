@@ -6,6 +6,6 @@
 
 int FunctionCommand::execute(int index) {
     executor->varMap.at(var)->value = stod(executor->commands->at(index+1));
-    executor->executeScope(startIndex, startIndex + executor->jumpScope(startIndex));
+    executor->executeScope(startIndex+4, startIndex + executor->jumpScope(startIndex)-1);
     return 2;
 }

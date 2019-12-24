@@ -27,6 +27,7 @@ public:
     int execute(int index) override{return 0;}
     void initiate();
     void executeScope(int start, int end);
+    void executeFunctionScope(int start, int end, string var);
     void refreshVariables();
     double interpretFromString(string expression);
     int jumpScope(int index);

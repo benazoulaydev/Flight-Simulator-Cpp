@@ -36,14 +36,14 @@ void Executor::executeScope(int start, int end) {
     // execute the commands.
     int i = start;
     while (i < end){
-        if (commands->at(i+1) == "var"){
+        if (commandsMap.find(commands->at(i)) != commandsMap.end()){
+            Command* c = commandsMap.at(commands->at(i));
+            i += c->execute(i);
+        } else if (commands->at(i+1) == "var"){
             //create functionCommand and jump as needed
             commandsMap.insert({commands->at(i), new FunctionCommand(this, i)});
             i += jumpScope(i);
-        }else if (commandsMap.find(commands->at(i)) != commandsMap.end()){
-            Command* c = commandsMap.at(commands->at(i));
-            i += c->execute(i);
-        } else {
+        }else {
             varMap[commands->at(i)]->value = interpretFromString(commands->at(i+2));
             i += 3;
         }
@@ -76,4 +76,21 @@ int Executor::jumpScope(int index) {
         jump++;
     }
     return jump;
+}
+
+void Executor::executeFunctionScope(int start, int end, string var) {
+    int i = start+4;
+    while (i < end){
+        if (commandsMap.find(commands->at(i)) != commandsMap.end()){
+            Command* c = commandsMap.at(commands->at(i));
+            i += c->execute(i);
+        } else if (commands->at(i+1) == "var"){
+            //create functionCommand and jump as needed
+            commandsMap.insert({commands->at(i), new FunctionCommand(this, i)});
+            i += jumpScope(i);
+        }else {
+            varMap[commands->at(i)]->value = interpretFromString(commands->at(i+2));
+            i += 3;
+        }
+    }
 }
