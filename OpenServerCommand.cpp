@@ -70,8 +70,8 @@ int OpenServerCommand::serverExecution(int clientSocket) {
             }
         }
         i++;
-        //sleep
-        this_thread::sleep_for(chrono::milliseconds(100));
+//        //sleep
+//        this_thread::sleep_for(chrono::milliseconds(100));
     }
 
 }
