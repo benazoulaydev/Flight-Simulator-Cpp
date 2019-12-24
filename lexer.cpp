@@ -76,6 +76,7 @@ void lexer(vector<string> *commands, string line){
         unsigned endPos = line.find_last_of(')');
         string in = line.substr(startPos+1,endPos-startPos-1);
         (*commands).emplace_back(in.substr(0, in.find(',')));
+        //TODO fix address lexer
         (*commands).emplace_back(in.substr(in.find(',')+1));
     } else if (regex_match(line, whileLoop) || regex_match(line, ifCon)){
         string in;

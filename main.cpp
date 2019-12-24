@@ -1,17 +1,6 @@
 #include <iostream>
 #include "lexer.h"
 #include "Executor.h"
-//#include <unordered_map>
-//#include "Command.h"
-//#include "PrintCommand.h"
-//#include "Var.h"
-//#include "VarCommand.h"
-//#include "SleepCommand.h"
-//#include "IfCommand.h"
-//#include "WhileCommand.h"
-//#include "ConnectClientCommand.h"
-//#include "OpenServerCommand.h"
-//#include "expression/Interpreter.h"
 
 
 using namespace std;

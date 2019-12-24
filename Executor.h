@@ -21,19 +21,22 @@ public:
     unordered_map<string, Command*> commandsMap;
     unordered_map<string, Var*> varMap;
     Interpreter interpreter;
+    unordered_map<int, string> simMap;
+    unordered_map<string, Var*> simToVarMap;
     Executor(vector<string> *commands){
         this->commands = commands;
     }
     int execute(int index) override{return 0;}
     void initiate();
     void executeScope(int start, int end);
-    void executeFunctionScope(int start, int end, string var);
     void refreshVariables();
     double interpretFromString(string expression);
     int jumpScope(int index);
     ~Executor(){
         //TODO delete commandsMap
     }
+
+    void createSimMap();
 };
 
 
