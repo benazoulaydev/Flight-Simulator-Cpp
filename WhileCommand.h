@@ -19,8 +19,8 @@ class WhileCommand : public Command{
 private:
     Executor* executor;
 public:
-    WhileCommand(Executor* executor) {
-        this->executor = executor;
+    WhileCommand(Executor* exec) {
+        this->executor = exec;
     }
     int execute(int index) override;
 };

@@ -47,8 +47,9 @@ void Executor::executeScope(int start, int end) {
             i += jumpScope(i);
         }else {
             varMap[commands->at(i)]->value = interpretFromString(commands->at(i+2));
-            //TODO sendToServer(varMap[commands->at(i)]
-            ((ConnectClientCommand*) commandsMap["connectControlClient"])->sendToServer(varMap[commands->at(i)]);
+            if(varMap[commands->at(i)]->arrow == "->"){
+                ((ConnectClientCommand*) commandsMap["connectControlClient"])->sendToServer(varMap[commands->at(i)]);
+            }
             i += 3;
         }
     }

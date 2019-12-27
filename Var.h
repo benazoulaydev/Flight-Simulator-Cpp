@@ -15,11 +15,11 @@ public:
     string name;
     double value;
     string sim;
-    string arrow = "->";
-    Var(string name, double value, string sim){
-        this->name = name;
-        this->value = value;
-        this->sim = sim;
+    string arrow = "no";
+    Var(string n, double val, string s){
+        this->name = n;
+        this->value = val;
+        this->sim = s;
     }
     string toStr();
 };

@@ -21,7 +21,7 @@ void lexer(vector<string> *commands, string line){
     if (regex_match(line, print)){
         (*commands).emplace_back("Print");
         unsigned startPos = line.find ('(');
-        unsigned endPos = line.find(')');
+        unsigned endPos = line.find_last_of(')');
         string in = line.substr(startPos + 1, endPos - startPos - 1);
         if (in.find('"') == string::npos){
             in.erase(std::remove_if(in.begin(), in.end(), ::isspace), in.end());
@@ -75,9 +75,11 @@ void lexer(vector<string> *commands, string line){
         unsigned startPos = line.find ('(');
         unsigned endPos = line.find_last_of(')');
         string in = line.substr(startPos+1,endPos-startPos-1);
-        (*commands).emplace_back(in.substr(0, in.find(',')));
-        //TODO fix address lexer
-        (*commands).emplace_back(in.substr(in.find(',')+1));
+        string right = in.substr(1, in.find(','));
+        right = in.substr(1, right.size() - 2);
+        string left = in.substr(in.find(',')+1);
+        (*commands).emplace_back(right);
+        (*commands).emplace_back(left);
     } else if (regex_match(line, whileLoop) || regex_match(line, ifCon)){
         string in;
         if (regex_match(line, ifCon)){
@@ -90,7 +92,7 @@ void lexer(vector<string> *commands, string line){
             in = line.substr(5);
         }
         string dl = "";
-        int i = 0;
+        unsigned i = 0;
         while(i < in.size()){
             if (in[i]=='<' || in[i]=='>' || in[i]=='!' || in[i]=='=')
                 dl+=in[i];
@@ -136,6 +138,7 @@ void lexerFromFile(vector<string> *commands, string fileName) {
     ifstream file(fileName);
     if (file.is_open()) {
         string line;
+
         while (getline(file, line)) {
             lexer(commands, line);
         }

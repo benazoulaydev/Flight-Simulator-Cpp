@@ -18,8 +18,8 @@ class IfCommand  : public Command{
 private:
     Executor* executor;
 public:
-    explicit IfCommand(Executor* executor) {
-        this->executor = executor;
+    explicit IfCommand(Executor* exec) {
+        this->executor = exec;
     }
 
     int execute(int index) override;
