@@ -16,10 +16,10 @@ public:
     double value;
     string sim;
     string arrow = "no";
-    Var(string name, double value, string sim){
-        this->name = name;
-        this->value = value;
-        this->sim = sim;
+    Var(string n, double val, string s){
+        this->name = n;
+        this->value = val;
+        this->sim = s;
     }
     string toStr();
 };

@@ -17,8 +17,8 @@ private:
     Executor* executor;
     int client_socket;
 public:
-    explicit ConnectClientCommand(Executor* executor) {
-        this->executor = executor;
+    explicit ConnectClientCommand(Executor* exec) {
+        this->executor = exec;
     }
     int execute(int index) override;
     void sendToServer(Var* aVar);

@@ -2,15 +2,11 @@
 #include "lexer.h"
 #include "Executor.h"
 
-#include <sys/socket.h>
 #include <string>
-#include <iostream>
-#include <unistd.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
+#include <chrono>
+#include <thread>
 
 using namespace std;
-
 
 int main(int argc, char* argv[]) {
     if(argc < 2) {
@@ -19,14 +15,12 @@ int main(int argc, char* argv[]) {
     }
     vector<string> commands;
     lexerFromFile(&commands, argv[1]);
-//     for checking - print the commands from the lexer
-//    for (auto i = commands.begin(); i != commands.end(); ++i)
-//        std::cout << *i << endl;
-
-    Executor executor(&commands);
+    bool status = true;
+    Executor executor(&commands, &status);
     executor.initiate();
     executor.executeScope(0, commands.size());
+    status = false;
+    // wait before thread finish
+    this_thread::sleep_for(chrono::milliseconds(5000));
     return 0;
-
-
 }

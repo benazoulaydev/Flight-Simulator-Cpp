@@ -9,9 +9,8 @@
 using namespace std;
 
 int VarCommand::execute(int index) {
-    if(executor->commands->at(index+3) == "sim" && index+4< executor->commands->size() &&
+    if(executor->commands->at(index+3) == "sim" && ((unsigned)index+4) < executor->commands->size() &&
         executor->commands->at(index+4)[0] == '/'){
-        // TODO change between -> to <-
         if (executor->commands->at(index+2) == "->"){
             executor->varMap.insert({executor->commands->at(index+1), new Var(executor->commands->at(index+1), 0, executor->commands->at(index+4))});
             Var* cur = executor->varMap[executor->commands->at(index+1)];
@@ -30,7 +29,7 @@ int VarCommand::execute(int index) {
     }
 }
 
-VarCommand::VarCommand(Executor *executor) {
-    this->executor = executor;
+VarCommand::VarCommand(Executor *exec) {
+    this->executor = exec;
 }
 

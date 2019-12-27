@@ -90,7 +90,7 @@ void lexer(vector<string> *commands, string line){
             in = line.substr(5);
         }
         string dl = "";
-        int i = 0;
+        unsigned i = 0;
         while(i < in.size()){
             if (in[i]=='<' || in[i]=='>' || in[i]=='!' || in[i]=='=')
                 dl+=in[i];

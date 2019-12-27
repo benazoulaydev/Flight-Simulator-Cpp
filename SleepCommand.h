@@ -17,8 +17,8 @@ class SleepCommand : public Command{
 private:
     Executor* executor;
 public:
-    explicit SleepCommand(Executor* executor) {
-        this->executor = executor;
+    explicit SleepCommand(Executor* exec) {
+        this->executor = exec;
     }
     int execute(int index) override;
 

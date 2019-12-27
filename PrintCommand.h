@@ -18,8 +18,8 @@ class PrintCommand:public Command{
 private:
     Executor* executor;public:
 public:
-    explicit PrintCommand(Executor* executor) {
-        this->executor = executor;
+    explicit PrintCommand(Executor* exec) {
+        this->executor = exec;
     }
     int execute(int index) override;
 };

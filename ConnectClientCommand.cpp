@@ -14,7 +14,7 @@ using namespace std;
 
 int ConnectClientCommand::execute(int index) {
     //create socket
-    client_socket = socket(AF_INET, SOCK_STREAM, 0);
+    this->client_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (client_socket == -1) {
         //error
         std::cerr << "Could not create a socket"<<std::endl;
@@ -29,11 +29,10 @@ int ConnectClientCommand::execute(int index) {
     string addressRecvStr = executor->commands->at(index+1);
     int n = addressRecvStr.length();
     // declaring character array
-    char addressRecvStrChar[n + 1];
+    char* addressRecvStrChar = new char[n + 1];
     // copying the contents of the
     // string to char array
     strcpy(addressRecvStrChar, addressRecvStr.c_str());
-
     address.sin_addr.s_addr = inet_addr(addressRecvStrChar);  //the localhost address
     address.sin_port = htons(stoi(executor->commands->at(index+2)));
     //we need to convert our number (both port & localhost)
@@ -44,12 +43,8 @@ int ConnectClientCommand::execute(int index) {
     if (is_connect == -1) {
         std::cerr << "Could not connect to host server"<<std::endl;
         return -2;
-    } else {
-        std::cout<<"Client is now connected to server" <<std::endl;
     }
-
-
-
+    delete [] addressRecvStrChar;
     return 3;
 }
 
@@ -60,7 +55,7 @@ void ConnectClientCommand::sendToServer(Var* aVar) {
     int n = toSend.length();
 
     // declaring character array
-    char char_array[n + 1];
+    char* char_array =  new char[n + 1];
 
     // copying the contents of the
     // string to char array
@@ -70,7 +65,5 @@ void ConnectClientCommand::sendToServer(Var* aVar) {
     if (is_sent == -1) {
         std::cout<<"Error sending message"<<std::endl;
     }
-
-    //close(client_socket);
-
+    delete [] char_array;
 }
