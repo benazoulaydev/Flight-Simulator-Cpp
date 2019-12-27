@@ -14,7 +14,7 @@ using namespace std;
 
 int ConnectClientCommand::execute(int index) {
     //create socket
-    client_socket = socket(AF_INET, SOCK_STREAM, 0);
+    this->client_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (client_socket == -1) {
         //error
         std::cerr << "Could not create a socket"<<std::endl;
@@ -33,7 +33,6 @@ int ConnectClientCommand::execute(int index) {
     // copying the contents of the
     // string to char array
     strcpy(addressRecvStrChar, addressRecvStr.c_str());
-
     address.sin_addr.s_addr = inet_addr(addressRecvStrChar);  //the localhost address
     address.sin_port = htons(stoi(executor->commands->at(index+2)));
     //we need to convert our number (both port & localhost)
@@ -44,8 +43,6 @@ int ConnectClientCommand::execute(int index) {
     if (is_connect == -1) {
         std::cerr << "Could not connect to host server"<<std::endl;
         return -2;
-    } else {
-        std::cout<<"Client is now connected to server" <<std::endl;
     }
     delete [] addressRecvStrChar;
     return 3;
@@ -69,6 +66,4 @@ void ConnectClientCommand::sendToServer(Var* aVar) {
         std::cout<<"Error sending message"<<std::endl;
     }
     delete [] char_array;
-    //close(client_socket);
-
 }

@@ -9,6 +9,7 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include <thread>
+
 using namespace std;
 
 int OpenServerCommand::execute(int index) {
@@ -43,7 +44,7 @@ int OpenServerCommand::execute(int index) {
 }
 int OpenServerCommand::serverExecution(int clientSocket) {
     //reading from client
-    while(1){
+    while(!executor->status){
         char buffer[2048] = {0};
         read( clientSocket , buffer, 2048);
         string numbArray[36];
@@ -65,5 +66,6 @@ int OpenServerCommand::serverExecution(int clientSocket) {
                 executor->simToVarMap[executor->simMap[j]]->value = stod(numbArray[j-1]);
             }
         }
+        cout<<"finish thread"<<endl;
     }
 }
