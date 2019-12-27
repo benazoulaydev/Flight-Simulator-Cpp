@@ -24,10 +24,11 @@ public:
     Interpreter interpreter;
     unordered_map<int, string> simMap;
     unordered_map<string, Var*> simToVarMap;
-    Executor(vector<string> *commands){
-        this->commands = commands;
+    Executor(vector<string> *commandsVector){
+        this->commands = commandsVector;
     }
-    int execute(int index) override{return 0;}
+    // this function is meaningless
+    int execute(int index) override{return index;}
     void initiate();
     void executeScope(int start, int end);
     void refreshVariables();
@@ -39,7 +40,6 @@ public:
         for(auto varPair : this->commandsMap){
             delete(varPair.second);
         }
-        //TODO delete commandsMap
     }
 
     void createSimMap();

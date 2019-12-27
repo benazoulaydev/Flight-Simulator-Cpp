@@ -29,7 +29,7 @@ int ConnectClientCommand::execute(int index) {
     string addressRecvStr = executor->commands->at(index+1);
     int n = addressRecvStr.length();
     // declaring character array
-    char addressRecvStrChar[n + 1];
+    char* addressRecvStrChar = new char[n + 1];
     // copying the contents of the
     // string to char array
     strcpy(addressRecvStrChar, addressRecvStr.c_str());
@@ -47,9 +47,7 @@ int ConnectClientCommand::execute(int index) {
     } else {
         std::cout<<"Client is now connected to server" <<std::endl;
     }
-
-
-
+    delete [] addressRecvStrChar;
     return 3;
 }
 
@@ -60,7 +58,7 @@ void ConnectClientCommand::sendToServer(Var* aVar) {
     int n = toSend.length();
 
     // declaring character array
-    char char_array[n + 1];
+    char* char_array =  new char[n + 1];
 
     // copying the contents of the
     // string to char array
@@ -70,7 +68,7 @@ void ConnectClientCommand::sendToServer(Var* aVar) {
     if (is_sent == -1) {
         std::cout<<"Error sending message"<<std::endl;
     }
-
+    delete [] char_array;
     //close(client_socket);
 
 }

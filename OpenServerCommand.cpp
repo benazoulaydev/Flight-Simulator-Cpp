@@ -36,7 +36,6 @@ int OpenServerCommand::execute(int index) {
     }
     close(socketFD);
 
-    bool accepted = false;
     thread thread1(&OpenServerCommand::serverExecution,this, client_socket);
     thread1.detach();
     //TODO find ditch and telete before main finish
@@ -44,11 +43,9 @@ int OpenServerCommand::execute(int index) {
 }
 int OpenServerCommand::serverExecution(int clientSocket) {
     //reading from client
-    unsigned long int i = 1;
     while(1){
         char buffer[2048] = {0};
-        int valread = read( clientSocket , buffer, 2048);
-//        cout<<buffer<<endl;
+        read( clientSocket , buffer, 2048);
         string numbArray[36];
         string numHelp = "";
         int index = 0;
@@ -64,13 +61,9 @@ int OpenServerCommand::serverExecution(int clientSocket) {
         numbArray[index] = numHelp;
         // update the variables
         for (int j = 1; j <= 36; ++j) {
-//            cout << index << " "<<numbArray[index] << endl;
             if(executor->simToVarMap.find(executor->simMap[j]) != executor->varMap.end()){
                 executor->simToVarMap[executor->simMap[j]]->value = stod(numbArray[j-1]);
             }
         }
-        i++;
-
     }
-
 }

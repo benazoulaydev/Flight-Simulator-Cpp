@@ -13,8 +13,8 @@ class OpenServerCommand  : public Command{
 private:
     Executor* executor;
 public:
-    explicit OpenServerCommand(Executor* executor) {
-        this->executor = executor;
+    explicit OpenServerCommand(Executor* exec) {
+        this->executor = exec;
     }
     int execute(int index) override;
     int serverExecution(int index);

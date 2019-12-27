@@ -18,7 +18,7 @@ class VarCommand : public Command{
 private:
     Executor* executor;
 public:
-    VarCommand(Executor* executor);
+    VarCommand(Executor* exec);
     int execute(int index) override;
 };
 
