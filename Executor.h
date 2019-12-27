@@ -42,7 +42,6 @@ public:
         for(auto varPair : this->commandsMap){
             delete(varPair.second);
         }
-        *status = true;
     }
 
     void createSimMap();

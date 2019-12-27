@@ -15,10 +15,12 @@ int main(int argc, char* argv[]) {
     }
     vector<string> commands;
     lexerFromFile(&commands, argv[1]);
-    bool status = false;
+    bool status = true;
     Executor executor(&commands, &status);
     executor.initiate();
     executor.executeScope(0, commands.size());
+    status = false;
+    // wait before thread finish
     this_thread::sleep_for(chrono::milliseconds(5000));
     return 0;
 }

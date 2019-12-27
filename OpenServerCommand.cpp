@@ -39,12 +39,11 @@ int OpenServerCommand::execute(int index) {
 
     thread thread1(&OpenServerCommand::serverExecution,this, client_socket);
     thread1.detach();
-    //TODO find ditch and telete before main finish
     return 2;
 }
 int OpenServerCommand::serverExecution(int clientSocket) {
     //reading from client
-    while(!executor->status){
+    while(*executor->status){
         char buffer[2048] = {0};
         read( clientSocket , buffer, 2048);
         string numbArray[36];
@@ -66,6 +65,5 @@ int OpenServerCommand::serverExecution(int clientSocket) {
                 executor->simToVarMap[executor->simMap[j]]->value = stod(numbArray[j-1]);
             }
         }
-        cout<<"finish thread"<<endl;
     }
 }
