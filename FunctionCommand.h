@@ -21,11 +21,11 @@ private:
     int startIndex;
     string var;
 public:
-    FunctionCommand(Executor* executor, int startIndex) {
-        this->executor = executor;
-        this->startIndex = startIndex;
-        this->var = executor->commands->at(startIndex+2);
-        executor->varMap.insert({var,new Var(var, 0, "none")});
+    FunctionCommand(Executor* pExecutor, int start) {
+        this->executor = pExecutor;
+        this->startIndex = start;
+        this->var = pExecutor->commands->at(start + 2);
+        pExecutor->varMap.insert({var, new Var(var, 0, "none")});
     }
     int execute(int index) override;
 };
