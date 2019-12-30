@@ -19,7 +19,7 @@ Note: You may need to change the permissions for copying this file to the folder
 --generic=socket,out,10,127.0.0.1,5400,tcp,generic_small   
 --telnet=socket,in,10,127.0.0.1,5402,tcp
 
-- Copy fly.txt From the Assets folder to the same folder as the main.
+- Copy fly.txt From the Assets folder to the same folder as the main.cpp.
 
 ## Usage
 You can change the content inside fly.txt according to how you want the plane acts.
