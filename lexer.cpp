@@ -6,8 +6,14 @@
 #include <iostream>
 
 using namespace std;
-
+//TODO EMPTY LINES FLY.TXT
+/**
+ * Create the lexer from the file given in argument
+ * @param commands
+ * @param line
+ */
 void lexer(vector<string> *commands, string line){
+    //regex for each command
     regex print("[ \t]{0,}Print.*");
     regex var("[ \t]{0,}var .*");
     regex sleep("[ \t]{0,}Sleep.*");
@@ -18,10 +24,13 @@ void lexer(vector<string> *commands, string line){
     regex func("[^=]*\\(.*\\).*");
     regex funcDec(".*\\([ \t]{0,}var .*\\).*");
 
+    //if print do:
     if (regex_match(line, print)){
+        //add the command in the command vector
         (*commands).emplace_back("Print");
         unsigned startPos = line.find ('(');
         unsigned endPos = line.find_last_of(')');
+        //get the string inside the print()
         string in = line.substr(startPos + 1, endPos - startPos - 1);
         if (in.find('"') == string::npos){
             in.erase(std::remove_if(in.begin(), in.end(), ::isspace), in.end());
@@ -33,7 +42,9 @@ void lexer(vector<string> *commands, string line){
             (*commands).emplace_back(inside2);
         }
     } else if (regex_match(line, var)){
+        //if variable do:
         (*commands).emplace_back("var");
+        //add the command in the command vector
         string in = line.substr(line.find("var")+3);
         in.erase(std::remove_if(in.begin(), in.end(), ::isspace), in.end());
         regex rightArrow(".*->.*");
@@ -58,19 +69,25 @@ void lexer(vector<string> *commands, string line){
             (*commands).emplace_back(in.substr(in.find('=')+1));
         }
     } else if (regex_match(line, sleep)){
+        //if sleep do:
         line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+        //add the command in the command vector
         (*commands).emplace_back("Sleep");
         unsigned startPos = line.find ('(');
         unsigned endPos = line.find_last_of(')');
         (*commands).emplace_back(line.substr(startPos+1,endPos-startPos-1));
     } else if (regex_match(line, openServer)){
+        //if openServer do:
         line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+        //add the command in the command vector
         (*commands).emplace_back("openDataServer");
         unsigned startPos = line.find ('(');
         unsigned endPos = line.find_last_of(')');
         (*commands).emplace_back(line.substr(startPos+1,endPos-startPos-1));
     } else if (regex_match(line, connectClient)){
+        //if connectClient do:
         line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+        //add the command in the command vector
         (*commands).emplace_back("connectControlClient");
         unsigned startPos = line.find ('(');
         unsigned endPos = line.find_last_of(')');
@@ -81,13 +98,16 @@ void lexer(vector<string> *commands, string line){
         (*commands).emplace_back(right);
         (*commands).emplace_back(left);
     } else if (regex_match(line, whileLoop) || regex_match(line, ifCon)){
+        //if whileLoop do:
         string in;
         if (regex_match(line, ifCon)){
             (*commands).emplace_back("if");
+            //add the command in the command vector
             line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
             in = line.substr(2);
         } else {
             (*commands).emplace_back("while");
+            //add the command in the command vector
             line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
             in = line.substr(5);
         }
@@ -134,7 +154,13 @@ void lexer(vector<string> *commands, string line){
     }
 }
 
+/**
+ * Create the lexer from file
+ * @param commands
+ * @param fileName
+ */
 void lexerFromFile(vector<string> *commands, string fileName) {
+    //open the file and create the lexer form it
     ifstream file(fileName);
     if (file.is_open()) {
         string line;

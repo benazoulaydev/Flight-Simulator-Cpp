@@ -11,7 +11,13 @@
 #include "Executor.h"
 
 using namespace std;
-
+/**
+ *
+ * @param index
+ * @return 0
+ *
+ * execute func by the executor class
+ */
 int ConnectClientCommand::execute(int index) {
     //create socket
     this->client_socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -48,10 +54,15 @@ int ConnectClientCommand::execute(int index) {
     return 3;
 }
 
+/**
+ *
+ * @param aVar
+ * send to server value to change.
+ */
 void ConnectClientCommand::sendToServer(Var* aVar) {
-//if here we made a connection
+    //if here we made a connection send to server msg with at the end "\r\n"
     string toSend = "set " + aVar->sim + " " + to_string(aVar->value) + "\r\n";
-
+    //length of message to send
     int n = toSend.length();
 
     // declaring character array
@@ -60,7 +71,7 @@ void ConnectClientCommand::sendToServer(Var* aVar) {
     // copying the contents of the
     // string to char array
     strcpy(char_array, toSend.c_str());
-
+    //send the message
     int is_sent = send(client_socket , char_array , toSend.size() , 0 );
     if (is_sent == -1) {
         std::cout<<"Error sending message"<<std::endl;

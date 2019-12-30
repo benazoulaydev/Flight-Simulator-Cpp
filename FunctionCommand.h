@@ -21,6 +21,7 @@ private:
     int startIndex;
     string var;
 public:
+    //Constructor
     FunctionCommand(Executor* pExecutor, int start) {
         this->executor = pExecutor;
         this->startIndex = start;

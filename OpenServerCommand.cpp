@@ -14,11 +14,13 @@
 using namespace std;
 
 int OpenServerCommand::execute(int index) {
+    //create the socket
     int socketFD = socket(AF_INET, SOCK_STREAM, 0);
     if(socketFD == -1){
         cerr<< "Could not create a socket" << endl;
         throw "Error";
     }
+    //get the address and the port for connection
     sockaddr_in address;
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY;
@@ -69,7 +71,7 @@ int OpenServerCommand::serverExecution(int clientSocket) {
                 for (int k = 0; buffer[k] != '\n'; k++) {
                     if (buffer[k] == ',') {
                         //print for testing
-                        cout<<numHelp<<" ";
+                        //cout<<numHelp<<" ";
                         numbArray[index] = numHelp;
                         numHelp = "";
                         index++;
@@ -81,7 +83,7 @@ int OpenServerCommand::serverExecution(int clientSocket) {
 
 
                 numbArray[index] = numHelp;
-                cout<<numHelp<<" ";
+                //cout<<numHelp<<" ";
                 numHelp = "";
                 if (index != 35){
 
@@ -106,7 +108,7 @@ int OpenServerCommand::serverExecution(int clientSocket) {
                         executor->simToVarMap[executor->simMap[j]]->value = stod(numbArray[j-1]);
                     }
                 }
-                cout<<endl;
+                //cout<<endl;
                 index = 0;
                 flag = 1;
                 i += z+1;
@@ -137,5 +139,6 @@ int OpenServerCommand::serverExecution(int clientSocket) {
             n = read(clientSocket, buffer, 2048);
         }
     }
+    close(clientSocket);
     return 0;
 }
