@@ -9,6 +9,7 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include <thread>
+#include <strings.h>
 
 using namespace std;
 
@@ -44,26 +45,96 @@ int OpenServerCommand::execute(int index) {
 int OpenServerCommand::serverExecution(int clientSocket) {
     //reading from client
     while(*executor->status){
+        int i = 0;
+        int z = 0;
         char buffer[2048] = {0};
-        read( clientSocket , buffer, 2048);
-        string numbArray[36];
-        string numHelp = "";
-        int index = 0;
-        for (int k = 0; buffer[k] != '\n'; k++) {
-            if (buffer[k] == ',') {
-                numbArray[index] = numHelp;
-                numHelp = "";
-                index++;
-                continue;
-            }
-            numHelp += buffer[k];
+        int n = read( clientSocket , buffer, 2048);
+        if (n < 0) {
+            perror("ERROR reading from socket");
+            exit(1);
         }
-        numbArray[index] = numHelp;
-        // update the variables
-        for (int j = 1; j <= 36; ++j) {
-            if(executor->simToVarMap.find(executor->simMap[j]) != executor->varMap.end()){
-                executor->simToVarMap[executor->simMap[j]]->value = stod(numbArray[j-1]);
+        while (n >= 0) {
+            if (n < 0) {
+                perror("ERROR reading from socket");
+                exit(1);
             }
+            string numbArray[36];
+            string numHelp = "";
+
+
+            int index = 0;
+            int flag = 0;
+
+            while (buffer[i] != '\0') {
+                for (int k = 0; buffer[k] != '\n'; k++) {
+                    if (buffer[k] == ',') {
+                        //print for testing
+                        cout<<numHelp<<" ";
+                        numbArray[index] = numHelp;
+                        numHelp = "";
+                        index++;
+                        continue;
+                    }
+                    numHelp += buffer[k];
+                    z = k;
+                }
+
+
+                numbArray[index] = numHelp;
+                cout<<numHelp<<" ";
+                numHelp = "";
+                if (index != 35){
+
+                    string numbArrayHlp[36];
+                    int p = 0;
+                    for (int k = 0; k<36; k++) {
+                        if (index<35) {
+                            numbArrayHlp[k] = "EMPTY";
+                            index++;
+                        } else {
+                            numbArrayHlp[k] = numbArray[p];
+                            p++;
+                        }
+
+                    }
+                    *numbArray = *numbArrayHlp;
+                }
+                // update the variables
+                for (int j = 1; j <= 36; ++j) {
+                    if(executor->simToVarMap.find(executor->simMap[j]) != executor->varMap.end() &&
+                       numbArray[j-1] != "EMPTY"){
+                        executor->simToVarMap[executor->simMap[j]]->value = stod(numbArray[j-1]);
+                    }
+                }
+                cout<<endl;
+                index = 0;
+                flag = 1;
+                i += z+1;
+            }
+            if (flag == 0){
+                string numbArrayHlp[36];
+                numbArrayHlp[0] = numHelp + numbArray[0];
+                for (int k = 1; k<36; k++) {
+                    if (index>0) {
+                        numbArrayHlp[k] = numbArray[k];
+                        index--;
+                    } else {
+                        numbArrayHlp[k] = "EMPTY";
+                    }
+
+                }
+                *numbArray = *numbArrayHlp;
+                for (int j = 1; j <= 36; ++j) {
+                    if(executor->simToVarMap.find(executor->simMap[j]) != executor->varMap.end() &&
+                       numbArray[j-1] != "EMPTY"){
+                        executor->simToVarMap[executor->simMap[j]]->value = stod(numbArray[j-1]);
+                    }
+                }
+                // i += z+1;
+            }
+            //actualizeData;
+            i = 0;
+            n = read(clientSocket, buffer, 2048);
         }
     }
     return 0;
