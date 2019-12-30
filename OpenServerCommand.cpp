@@ -66,4 +66,5 @@ int OpenServerCommand::serverExecution(int clientSocket) {
             }
         }
     }
+    return 0;
 }

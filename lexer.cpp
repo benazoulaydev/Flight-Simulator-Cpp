@@ -15,6 +15,8 @@ void lexer(vector<string> *commands, string line){
     regex connectClient("[ \t]{0,}connectControlClient.*");
     regex whileLoop("[ \t]{0,}while.*");
     regex ifCon("[ \t]{0,}if.*");
+    regex func("[^=]*\\(.*\\).*");
+    regex funcDec(".*\\([ \t]{0,}var .*\\).*");
 
     if (regex_match(line, print)){
         (*commands).emplace_back("Print");
@@ -102,6 +104,24 @@ void lexer(vector<string> *commands, string line){
         string in2 = in.substr(in.find(dl) + dl.length());
         (*commands).emplace_back(in2.substr(0,in2.find('{')));
         (*commands).emplace_back("{");
+    } else if(regex_match(line, func)){ // function declaration or usage
+        if(regex_match(line, funcDec)){ // function declaration
+            line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+            (*commands).emplace_back(line.substr(0,line.find('(')));
+            (*commands).emplace_back("var");
+            unsigned startPos = line.find ('(');
+            unsigned endPos = line.find(')');
+            string in = line.substr(startPos + 4, endPos - startPos - 4);
+            (*commands).emplace_back(in);
+            (*commands).emplace_back("{");
+        } else { // usage
+            line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+            (*commands).emplace_back(line.substr(0,line.find('(')));
+            unsigned startPos = line.find ('(');
+            unsigned endPos = line.find(')');
+            string in = line.substr(startPos + 1, endPos - startPos - 1);
+            (*commands).emplace_back(in);
+        }
     } else { // just changing var or }
         line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
         if (line[0] == '}'){

@@ -12,6 +12,7 @@
 #include "OpenServerCommand.h"
 #include "expression/Interpreter.cpp"
 #include "ConnectClientCommand.h"
+#include "FunctionCommand.h"
 
 void Executor::initiate() {
     // initializing commands objects.
@@ -40,7 +41,11 @@ void Executor::executeScope(int start, int end) {
         if (commandsMap.find(commands->at(i)) != commandsMap.end()){
             Command* c = commandsMap.at(commands->at(i));
             i += c->execute(i);
-        } else {
+        } else if (commands->at(i+1) == "var"){
+            //create functionCommand and jump as needed
+            commandsMap.insert({commands->at(i), new FunctionCommand(this, i)});
+            i += jumpScope(i);
+        }else {
             varMap[commands->at(i)]->value = interpretFromString(commands->at(i+2));
             if(varMap[commands->at(i)]->arrow == "->"){
                 ((ConnectClientCommand*) commandsMap["connectControlClient"])->sendToServer(varMap[commands->at(i)]);
@@ -98,4 +103,20 @@ void Executor::createSimMap() {
     simMap[34] = "/controls/switches/master-bat";
     simMap[35] = "/controls/switches/master-alt";
     simMap[36] = "/engines/engine/rpm";
+}
+int Executor::jumpScope(int index) {
+    stack<char> s;
+    s.emplace('{');
+    int jump = 4;
+    int i = index + 4;
+    while(!s.empty()){
+        if (commands->at(i)[0] == '}'){
+            s.pop();
+        } else if (commands->at(i)[0] == '{'){
+            s.emplace('{');
+        }
+        i++;
+        jump++;
+    }
+    return jump;
 }
