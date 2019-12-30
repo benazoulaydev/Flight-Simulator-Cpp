@@ -11,11 +11,14 @@
 #include "ConnectClientCommand.h"
 #include "OpenServerCommand.h"
 #include "expression/Interpreter.cpp"
-#include "ConnectClientCommand.h"
 #include "FunctionCommand.h"
 
+/**
+ * Init the command map and the simMap
+ */
 void Executor::initiate() {
     // initializing commands objects.
+    //create one object only fo each class
     PrintCommand* p = new PrintCommand(this);
     commandsMap["Print"] = (Command*)p;
     VarCommand* v = new VarCommand(this);
@@ -30,14 +33,21 @@ void Executor::initiate() {
     commandsMap["if"] = (Command*)ic;
     WhileCommand* w = new WhileCommand(this);
     commandsMap["while"] = (Command*)w;
-
+    //order the sim url into a map for easy access
     createSimMap();
 }
 
+/**
+ *
+ * @param start
+ * @param end
+ * execute the current scope
+ */
 void Executor::executeScope(int start, int end) {
     // execute the commands.
     int i = start;
     while (i < end){
+        //if there is in the comment map the commands->at(i) execute it
         if (commandsMap.find(commands->at(i)) != commandsMap.end()){
             Command* c = commandsMap.at(commands->at(i));
             i += c->execute(i);
@@ -48,6 +58,8 @@ void Executor::executeScope(int start, int end) {
         }else {
             varMap[commands->at(i)]->value = interpretFromString(commands->at(i+2));
             if(varMap[commands->at(i)]->arrow == "->"){
+                //only if the commands->at(i) is a var that have an arrow pointing to right :
+                //each time we change the var we update the value in the server also
                 ((ConnectClientCommand*) commandsMap["connectControlClient"])->sendToServer(varMap[commands->at(i)]);
             }
             i += 3;
@@ -55,17 +67,29 @@ void Executor::executeScope(int start, int end) {
     }
 }
 
+/**
+ * Calculate an expression
+ * @param expression
+ * @return the calculated value
+ */
 double Executor::interpretFromString(string expression) {
+    //calculate expression
     refreshVariables();
     return this->interpreter.interpret(expression)->calculate();
 }
 
+/*
+ * refresh the variable for expression
+ */
 void Executor::refreshVariables() {
+    //update the variable map
     for(auto varPair : this->varMap){
         this->interpreter.setVariables(varPair.second->toStr());
     }
 }
-
+/**
+ * Init the simmap
+ */
 void Executor::createSimMap() {
     simMap[1] = "/instrumentation/airspeed-indicator/indicated-speed-kt";
     simMap[2] = "/sim/time/warp";
@@ -104,7 +128,13 @@ void Executor::createSimMap() {
     simMap[35] = "/controls/switches/master-alt";
     simMap[36] = "/engines/engine/rpm";
 }
+/**
+ * calculate how much do we have to jump in the current scope
+ * @param index
+ * @return the index to jump
+ */
 int Executor::jumpScope(int index) {
+    //determine the current scope to jump after finishing it
     stack<char> s;
     s.emplace('{');
     int jump = 4;
