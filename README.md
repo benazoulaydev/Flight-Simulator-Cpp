@@ -1,5 +1,4 @@
 # Flight-Simulator-Cpp
-# Flight Simulator
 
 Flight Simulator is a cpp program that control a plane From FlightGear Game.
 
@@ -19,6 +18,8 @@ Note: You may need to change the permissions for copying this file to the folder
 - Open the FlightGear app, go to settings and to Additional Settings write : 
 --generic=socket,out,10,127.0.0.1,5400,tcp,generic_small   
 --telnet=socket,in,10,127.0.0.1,5402,tcp
+
+- Copy fly.txt From the Assets folder to the same folder as the main.
 
 ## Usage
 You can change the content inside fly.txt according to how you want the plane acts.
