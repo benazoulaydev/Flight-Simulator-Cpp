@@ -7,7 +7,11 @@
 #include "Executor.h"
 
 using namespace std;
-
+/**
+ * execute the varcommand
+ * @param index
+ * @return the number to jump
+ */
 int VarCommand::execute(int index) {
     if(executor->commands->at(index+3) == "sim" && ((unsigned)index+4) < executor->commands->size() &&
         executor->commands->at(index+4)[0] == '/'){
@@ -28,7 +32,10 @@ int VarCommand::execute(int index) {
         return 4;
     }
 }
-
+/**
+ * set the executor
+ * @param exec
+ */
 VarCommand::VarCommand(Executor *exec) {
     this->executor = exec;
 }

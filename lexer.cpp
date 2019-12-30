@@ -6,7 +6,6 @@
 #include <iostream>
 
 using namespace std;
-//TODO EMPTY LINES FLY.TXT
 /**
  * Create the lexer from the file given in argument
  * @param commands
@@ -23,10 +22,11 @@ void lexer(vector<string> *commands, string line){
     regex ifCon("[ \t]{0,}if.*");
     regex func("[^=]*\\(.*\\).*");
     regex funcDec(".*\\([ \t]{0,}var .*\\).*");
+    regex emptyLine(" *");
 
-    //if print do:
-    if (regex_match(line, print)){
-        //add the command in the command vector
+    if(regex_match(line, emptyLine)){
+        // do nothing
+    } else if (regex_match(line, print)){
         (*commands).emplace_back("Print");
         unsigned startPos = line.find ('(');
         unsigned endPos = line.find_last_of(')');
