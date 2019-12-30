@@ -2,6 +2,9 @@
 
 Flight Simulator is a cpp program that control a plane From FlightGear Game.
 
+Created by [KfirYehuda](https://github.com/kfiryehuda) and 
+ [BenAzoulayDev](https://github.com/benazoulaydev)
+
 ## Installation
 Please read flightgear [installations](https://www.flightgear.org/download/main-program/) carefully! It explicitly says how to download on which OS and where the files exist once you download onto your machine.
 **newest mac users with Catalina, you may have problems with the simulator. I suggest finding a parter without the newest version of Mac OS. Those in dualboot on ubuntu, you can install flightgear from the app store (software center) that ubuntu has.
