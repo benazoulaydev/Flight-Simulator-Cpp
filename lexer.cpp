@@ -17,8 +17,11 @@ void lexer(vector<string> *commands, string line){
     regex ifCon("[ \t]{0,}if.*");
     regex func("[^=]*\\(.*\\).*");
     regex funcDec(".*\\([ \t]{0,}var .*\\).*");
+    regex emptyLine(" *");
 
-    if (regex_match(line, print)){
+    if(regex_match(line, emptyLine)){
+        // do nothing
+    } else if (regex_match(line, print)){
         (*commands).emplace_back("Print");
         unsigned startPos = line.find ('(');
         unsigned endPos = line.find_last_of(')');
