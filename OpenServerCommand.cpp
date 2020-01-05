@@ -58,10 +58,16 @@ int OpenServerCommand::execute(int index) {
 int OpenServerCommand::serverExecution(int clientSocket) {
     //while the status == true
     while(*executor->status){
-        int i = 0;
-        int z = 0;
-        char buffer[2048] = {0};
-        int n = read( clientSocket , buffer, 2048);
+        string bufferString = "";
+        string bufferStringLast = "";
+        string allBuffer = "";
+
+
+
+
+        char buffer[4096] = {0};
+        bzero(buffer, 4096);
+        int n = read( clientSocket , buffer, 4096);
         if (n < 0) {
             perror("ERROR reading from socket");
             exit(1);
@@ -76,91 +82,63 @@ int OpenServerCommand::serverExecution(int clientSocket) {
             string numbArray[36];
             //numhelp is the leftside of a number in the first buffer if a value is  between two buffers
             string numHelp = "";
-            //index of "," separator to check if there are 35
-            int index = 0;
-            //flag to see if the buffer is empty we read less than 36 value
-            // and the rest is in the other buffer
-            int flag = 0;
-            //while buffer "not empty"
-            while (buffer[i] != '\0') {
-                //get the 36 values
-                for (int k = 0; buffer[k] != '\n'; k++) {
-                    if (buffer[k] == ',') {
-                        //print for testing
-                        //cout<<numHelp<<" ";
-                        numbArray[index] = numHelp;
-                        numHelp = "";
-                        index++;
-                        continue;
-                    }
-                    numHelp += buffer[k];
-                    z = k;
-                }
-                //the last value
-                numbArray[index] = numHelp;
+            string numHelpHlp = "";
 
-                //cout<<numHelp<<" ";
-                //if the while did not stop(buffer not empty) and if
-                //index != 35 it means only the last 36 values are in the numarray
-                //so update only them
-                numHelp = "";
-                if (index != 35){
 
-                    string numbArrayHlp[36];
-                    int p = 0;
-                    for (int k = 0; k<36; k++) {
-                        if (index<35) {
-                            //the values were no in the buffer
-                            numbArrayHlp[k] = "EMPTY";
-                            index++;
-                        } else {
-                            numbArrayHlp[k] = numbArray[p];
-                            p++;
-                        }
 
-                    }
-                    *numbArray = *numbArrayHlp;
+
+            int indexChar = 0;
+            int endLine;
+            int endbuffer;
+            while (1) {
+                endLine = bufferString.find ('\n');
+                endbuffer = bufferString.find ('\0');
+                bufferString += bufferStringLast;
+                if (endLine != -1) {
+                    allBuffer = bufferString;
+                    bufferStringLast = bufferString.substr(endLine + 1,endbuffer - 1);
+                    bufferString = bufferString.substr(0,endLine);
+                    break;
+
                 }
-                // update the variables
-                for (int j = 1; j <= 36; ++j) {
-                    if(executor->simToVarMap.find(executor->simMap[j]) != executor->varMap.end() &&
-                       numbArray[j-1] != "EMPTY"){
-                        executor->simToVarMap[executor->simMap[j]]->value = stod(numbArray[j-1]);
-                    }
+
+
+                while (buffer[indexChar] != '\0') {
+                    bufferString += buffer[indexChar];
+                    indexChar++;
+
                 }
-                //cout<<endl;
-                index = 0;
-                flag = 1;
-                i += z+1;
+                indexChar = 0;
+                bzero(buffer, 4096);
+                n = read(clientSocket, buffer, 4096);
+
             }
-            //if the while stop it means the buffer is empty
-            //if the flag = 0 it means we didnot update the first values in the 36 values
-            // so we update them
-            if (flag == 0){
-                string numbArrayHlp[36];
-                numbArrayHlp[0] = numHelp + numbArray[0];
-                for (int k = 1; k<36; k++) {
-                    if (index>0) {
-                        numbArrayHlp[k] = numbArray[k];
-                        index--;
-                    } else {
-                        //the last is empty
-                        numbArrayHlp[k] = "EMPTY";
-                    }
+            std::string delimiter = ",";
 
-                }
-                *numbArray = *numbArrayHlp;
-                //update the values
-                for (int j = 1; j <= 36; ++j) {
-                    if(executor->simToVarMap.find(executor->simMap[j]) != executor->varMap.end() &&
-                       numbArray[j-1] != "EMPTY"){
-                        executor->simToVarMap[executor->simMap[j]]->value = stod(numbArray[j-1]);
-                    }
+            //bufferString = "1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0,10.00,11.0,12.0,13.0,14.0,
+            // 15.0,16.0,17.0,18.0,19.0,20.000,21.0,22.0,23.0,24.0,25.0,26.0,27.0,28.0,29.0,
+            // 30,31,32,33,34,35,36";
+
+
+            size_t pos = 0;
+            std::string token;
+            int j=0;
+            while ((pos = bufferString.find(delimiter)) != std::string::npos) {
+                token = bufferString.substr(0, pos);
+                numbArray[j] = token;
+                bufferString.erase(0, pos + delimiter.length());
+                j++;
+            }
+            numbArray[j] = bufferString;
+
+            for (int h = 1; h <= 36; ++h) {
+                //actualizeData;
+
+                if(executor->simToVarMap.find(executor->simMap[h]) != executor->varMap.end()){
+                    executor->simToVarMap[executor->simMap[h]]->value = stod(numbArray[h-1]);
                 }
             }
-            //actualizeData;
-            i = 0;
-            n = read(clientSocket, buffer, 2048);
+
         }
     }
     //close the socket
